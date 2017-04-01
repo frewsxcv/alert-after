@@ -8,7 +8,7 @@ Note: Only works on macOS right now. I'm open to adding [Linux](https://github.c
 
 # Install
 
-1. [Install rustup.rs](https://rustup.rs/)
+1. [Install Rust](https://rustup.rs/)
 2. `cargo install alert-after`
 
 # Usage
