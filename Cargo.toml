@@ -12,4 +12,6 @@ path = "main.rs"
 
 [dependencies]
 notify-rust = "3.3"
+
+[target.'cfg(target_os = "macos")'.dependencies]
 mac-notification-sys = "0.1.0"
