@@ -4,11 +4,8 @@ Get a desktop notification after a command finishes executing
 
 # Install
 
-[Install rustup.rs](https://rustup.rs/)
-
-```
-cargo install alert-after
-```
+1. [Install rustup.rs](https://rustup.rs/)
+2. `cargo install alert-after`
 
 # Usage
 
