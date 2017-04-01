@@ -1,0 +1,12 @@
+[package]
+name = "alert-after"
+version = "0.1.0"
+authors = ["Corey Farwell <coreyf@rwell.org>"]
+
+[[bin]]
+name = "aa"
+path = "main.rs"
+
+[dependencies]
+notify-rust = "3.3"
+mac-notification-sys = "0.1.0"
