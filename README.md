@@ -1,6 +1,6 @@
 # alert-after
 
-Get a desktop notification after a command finishes executing
+Get a desktop notification after a command finishes executing. Helpful for notifying when long running CLI tasks are completed.
 
 Note: Only works on macOS right now. I'm open to adding [Linux](https://github.com/frewsxcv/alert-after/issues/1) and [Windows](https://github.com/frewsxcv/alert-after/issues/2) support, so if you're interested, feel free to open a pull request.
 
