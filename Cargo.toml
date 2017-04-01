@@ -2,6 +2,7 @@
 name = "alert-after"
 version = "0.1.0"
 authors = ["Corey Farwell <coreyf@rwell.org>"]
+license = "MIT/Apache-2.0"
 
 [[bin]]
 name = "aa"
