@@ -2,6 +2,8 @@
 
 Get a desktop notification after a command finishes executing
 
+![](http://i.imgur.com/XCTUJfT.gifv)
+
 # Install
 
 1. [Install rustup.rs](https://rustup.rs/)
