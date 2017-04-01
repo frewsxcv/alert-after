@@ -34,7 +34,7 @@ fn main() {
         }
     };
 
-    child.wait().expect("failed to wait on command");
+    let exit_status = child.wait().expect("failed to wait on command");
 
     let bundle = mac_notification_sys::get_bundle_identifier("safari").unwrap();
 
@@ -44,4 +44,8 @@ fn main() {
 
     mac_notification_sys::set_application(&bundle).unwrap();
     mac_notification_sys::send_notification(&full_cmd, &None, "finished executing", &None).unwrap();
+
+    if let Some(code) = exit_status.code() {
+        process::exit(code);
+    }
 }
