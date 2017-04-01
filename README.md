@@ -2,7 +2,7 @@
 
 Get a desktop notification after a command finishes executing
 
-![](http://i.imgur.com/XCTUJfT.gifv)
+![](http://i.imgur.com/XCTUJfT.gif)
 
 # Install
 
