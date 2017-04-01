@@ -4,10 +4,6 @@ extern crate notify_rust;
 use std::{env, io, process};
 use std::io::Write;
 
-fn print_error(error: String) -> ! {
-
-}
-
 fn main() {
     let mut args = env::args();
 
