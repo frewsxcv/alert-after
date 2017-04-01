@@ -1,6 +1,6 @@
 [root]
 name = "alert-after"
-version = "1.0.0"
+version = "1.1.0"
 dependencies = [
  "mac-notification-sys 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "notify-rust 3.3.0 (registry+https://github.com/rust-lang/crates.io-index)",
