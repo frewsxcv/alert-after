@@ -1,8 +1,27 @@
+#[cfg(target_os = "macos")]
 extern crate mac_notification_sys;
 extern crate notify_rust;
 
 use std::{env, io, process};
 use std::io::Write;
+
+#[cfg(target_os = "macos")]
+fn notify(msg: &str) {
+    let bundle = mac_notification_sys::get_bundle_identifier("safari").unwrap();
+
+    mac_notification_sys::set_application(&bundle).unwrap();
+    mac_notification_sys::send_notification(msg, &None, "finished executing", &None).unwrap();
+}
+
+#[cfg(not(target_os = "macos"))]
+fn notify(msg: &str) {
+    use notify_rust::Notification;
+    Notification::new()
+        .summary(msg)
+        .body("finished executing")
+        .show()
+        .unwrap();
+}
 
 fn main() {
     let mut args = env::args();
@@ -36,14 +55,12 @@ fn main() {
 
     let exit_status = child.wait().expect("failed to wait on command");
 
-    let bundle = mac_notification_sys::get_bundle_identifier("safari").unwrap();
 
     let mut full_cmd = program_name;
     full_cmd.push_str(" ");
     full_cmd.push_str(&args.join(" "));
 
-    mac_notification_sys::set_application(&bundle).unwrap();
-    mac_notification_sys::send_notification(&full_cmd, &None, "finished executing", &None).unwrap();
+    notify(&full_cmd);
 
     if let Some(code) = exit_status.code() {
         process::exit(code);
