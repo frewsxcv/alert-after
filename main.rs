@@ -6,19 +6,19 @@ use std::{env, io, process};
 use std::io::Write;
 
 #[cfg(target_os = "macos")]
-fn notify(msg: &str) {
+fn notify(msg_title: &str, msg_body: &str) {
     let bundle = mac_notification_sys::get_bundle_identifier("safari").unwrap();
 
     mac_notification_sys::set_application(&bundle).unwrap();
-    mac_notification_sys::send_notification(msg, &None, "finished executing", &None).unwrap();
+    mac_notification_sys::send_notification(msg_title, &None, msg_body, &None).unwrap();
 }
 
 #[cfg(not(target_os = "macos"))]
-fn notify(msg: &str) {
+fn notify(msg_title: &str, msg_body: &str) {
     use notify_rust::Notification;
     Notification::new()
-        .summary(msg)
-        .body("finished executing")
+        .summary(msg_title)
+        .body(msg_body)
         .show()
         .unwrap();
 }
@@ -48,7 +48,7 @@ fn main() {
                      "aa: Unknown command '{}': {}",
                      program_name,
                      e)
-                    .expect("could not write to stderr");
+                .expect("could not write to stderr");
             process::exit(1);
         }
     };
@@ -60,7 +60,17 @@ fn main() {
     full_cmd.push_str(" ");
     full_cmd.push_str(&args.join(" "));
 
-    notify(&full_cmd);
+    let cmd_success = if let Some(code) = exit_status.code() {
+        if code != 0 {
+            format!("Command exited with status code {}", code)
+        } else {
+            "Command exited successfully".to_string()
+        }
+    } else {
+        "Command exited".to_string()
+    };
+
+    notify(&full_cmd, &cmd_success);
 
     if let Some(code) = exit_status.code() {
         process::exit(code);
