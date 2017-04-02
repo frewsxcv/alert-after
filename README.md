@@ -11,6 +11,8 @@ Note: Only works on macOS and Linux right now. I'm open to adding [Windows](http
 1. [Install Rust](https://rustup.rs/)
 2. `cargo install alert-after`
 
+If installing on Linux, [Libdbus is also required](https://github.com/diwic/dbus-rs#requirements).
+
 # Usage
 
 ```
