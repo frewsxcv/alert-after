@@ -55,7 +55,6 @@ fn main() {
 
     let exit_status = child.wait().expect("failed to wait on command");
 
-
     let mut full_cmd = program_name;
     full_cmd.push_str(" ");
     full_cmd.push_str(&args.join(" "));
