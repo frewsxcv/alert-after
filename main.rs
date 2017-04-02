@@ -2,7 +2,7 @@
 extern crate mac_notification_sys;
 extern crate notify_rust;
 
-use std::{env, io, process};
+use std::{borrow, env, io, process};
 use std::io::Write;
 
 #[cfg(target_os = "macos")]
@@ -60,14 +60,10 @@ fn main() {
     full_cmd.push_str(" ");
     full_cmd.push_str(&args.join(" "));
 
-    let cmd_success = if let Some(code) = exit_status.code() {
-        if code != 0 {
-            format!("Command exited with status code {}", code)
-        } else {
-            "Command exited successfully".to_string()
-        }
-    } else {
-        "Command exited".to_string()
+    let cmd_success: borrow::Cow<str> = match exit_status.code() {
+        Some(0) => "Command exited successfully".into(),
+        Some(code) => format!("Command exited with status code {}", code).into(),
+        None => "Command exited".into(),
     };
 
     notify(&full_cmd, &cmd_success);
