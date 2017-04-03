@@ -39,7 +39,7 @@ fn main() {
 
     let mut command = process::Command::new(program_name.clone());
     let args = args.collect::<Vec<_>>();
-    command.args(args.clone());
+    command.args(&args.clone());
 
     let mut child = match command.spawn() {
         Ok(child) => child,
