@@ -43,18 +43,22 @@ fn spawn_command(mut command: process::Command,
     }
 }
 
+fn args() -> Vec<String> {
+    env::args().skip(1).collect()
+}
+
+fn first_arg_as_program_name(args: &[String]) -> Result<String, Box<error::Error>> {
+    match args.first() {
+        Some(program_name) => Ok(program_name.clone()),
+        None => Err("usage: aa <program name and args>".into()),
+    }
+}
+
 fn alert_after() -> Result<ExitCode, Box<error::Error>> {
-    let mut args = env::args();
-
-    let _ = args.next().unwrap();
-
-    let program_name = match args.next() {
-        Some(program_name) => program_name,
-        None => return Err("usage: aa <program name and args>".into()),
-    };
+    let args = args();
+    let program_name = try!(first_arg_as_program_name(&args));
 
     let mut command = process::Command::new(program_name.clone());
-    let args = args.collect::<Vec<_>>();
     command.args(&args.clone());
 
     let mut child = try!(spawn_command(command, &program_name));
