@@ -7,6 +7,8 @@ extern crate notify_rust;
 use std::{borrow, env, error, io, process};
 use std::io::Write;
 
+type ExitCode = i32;
+
 #[cfg(target_os = "macos")]
 fn notify(msg_title: &str, msg_body: &str) {
     let bundle = mac_notification_sys::get_bundle_identifier("safari").unwrap();
@@ -24,7 +26,13 @@ fn notify(msg_title: &str, msg_body: &str) {
         .unwrap();
 }
 
-type ExitCode = i32;
+fn exit_status_to_message(exit_status: process::ExitStatus) -> borrow::Cow<'static, str> {
+    match exit_status.code() {
+        Some(0) => "Command exited successfully".into(),
+        Some(code) => format!("Command exited with status code {}", code).into(),
+        None => "Command exited".into(),
+    }
+}
 
 fn alert_after() -> Result<ExitCode, Box<error::Error>>  {
     let mut args = env::args();
@@ -51,11 +59,7 @@ fn alert_after() -> Result<ExitCode, Box<error::Error>>  {
     full_cmd.push_str(" ");
     full_cmd.push_str(&args.join(" "));
 
-    let cmd_success: borrow::Cow<str> = match exit_status.code() {
-        Some(0) => "Command exited successfully".into(),
-        Some(code) => format!("Command exited with status code {}", code).into(),
-        None => "Command exited".into(),
-    };
+    let cmd_success = exit_status_to_message(exit_status);
 
     notify(&full_cmd, &cmd_success);
 
