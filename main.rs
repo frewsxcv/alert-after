@@ -64,13 +64,9 @@ fn alert_after() -> Result<ExitCode, Box<error::Error>> {
 
     let exit_status = child.wait().expect("failed to wait on command");
 
-    let mut full_cmd = program_name;
-    full_cmd.push_str(" ");
-    full_cmd.push_str(&args.join(" "));
-
     let cmd_success = exit_status_to_message(exit_status);
 
-    notify(&full_cmd, &cmd_success);
+    notify(&args.join(" "), &cmd_success);
 
     Ok(exit_status.code().unwrap_or(0))
 }
