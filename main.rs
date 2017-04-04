@@ -4,7 +4,7 @@ extern crate mac_notification_sys;
 #[cfg(not(target_os = "macos"))]
 extern crate notify_rust;
 
-use std::{borrow, env, io, process};
+use std::{borrow, env, error, io, process};
 use std::io::Write;
 
 #[cfg(target_os = "macos")]
@@ -24,18 +24,16 @@ fn notify(msg_title: &str, msg_body: &str) {
         .unwrap();
 }
 
-fn main() {
+type ExitCode = i32;
+
+fn alert_after() -> Result<ExitCode, Box<error::Error>>  {
     let mut args = env::args();
 
     let _ = args.next().unwrap();
 
     let program_name = match args.next() {
         Some(program_name) => program_name,
-        None => {
-            writeln!(io::stderr(), "usage: aa <program name and args>")
-                .expect("could not write to stderr");
-            process::exit(1);
-        }
+        None => return Err("usage: aa <program name and args>".into()),
     };
 
     let mut command = process::Command::new(program_name.clone());
@@ -44,14 +42,7 @@ fn main() {
 
     let mut child = match command.spawn() {
         Ok(child) => child,
-        Err(e) => {
-            writeln!(io::stderr(),
-                     "aa: Unknown command '{}': {}",
-                     program_name,
-                     e)
-                .expect("could not write to stderr");
-            process::exit(1);
-        }
+        Err(e) => return Err(format!("aa: Unknown command '{}': {}", program_name, e).into()),
     };
 
     let exit_status = child.wait().expect("failed to wait on command");
@@ -68,7 +59,12 @@ fn main() {
 
     notify(&full_cmd, &cmd_success);
 
-    if let Some(code) = exit_status.code() {
-        process::exit(code);
+    Ok(exit_status.code().unwrap_or(0))
+}
+
+fn main() {
+    match alert_after() {
+        Ok(exit_code) => process::exit(exit_code),
+        Err(e) => writeln!(io::stderr(), "aa: {}", e).expect("could not write to stderr"),
     }
 }
