@@ -34,14 +34,16 @@ fn exit_status_to_message(exit_status: process::ExitStatus) -> borrow::Cow<'stat
     }
 }
 
-fn spawn_command(mut command: process::Command, program_name: &str) -> Result<process::Child, Box<error::Error>> {
+fn spawn_command(mut command: process::Command,
+                 program_name: &str)
+                 -> Result<process::Child, Box<error::Error>> {
     match command.spawn() {
         Ok(child) => Ok(child),
         Err(e) => Err(format!("aa: Unknown command '{}': {}", program_name, e).into()),
     }
 }
 
-fn alert_after() -> Result<ExitCode, Box<error::Error>>  {
+fn alert_after() -> Result<ExitCode, Box<error::Error>> {
     let mut args = env::args();
 
     let _ = args.next().unwrap();
