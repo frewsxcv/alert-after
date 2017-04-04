@@ -54,15 +54,10 @@ fn first_arg_as_program_name(args: &[String]) -> Result<String, Box<error::Error
 
 fn alert_after() -> Result<ExitCode, Box<error::Error>> {
     let args = args();
-
     let mut child = try!(spawn_command(&args));
-
     let exit_status = child.wait().expect("failed to wait on command");
-
     let cmd_success = exit_status_to_message(exit_status);
-
     notify(&args.join(" "), &cmd_success);
-
     Ok(exit_status.code().unwrap_or(0))
 }
 
