@@ -10,8 +10,8 @@ repository = "https://github.com/frewsxcv/alert-after"
 name = "aa"
 path = "main.rs"
 
-[dependencies]
-notify-rust = "3.3"
-
 [target.'cfg(target_os = "macos")'.dependencies]
 mac-notification-sys = "0.1.0"
+
+[target.'cfg(not(target_os = "macos"))'.dependencies]
+notify-rust = "3.3"

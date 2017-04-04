@@ -1,5 +1,7 @@
 #[cfg(target_os = "macos")]
 extern crate mac_notification_sys;
+
+#[cfg(not(target_os = "macos"))]
 extern crate notify_rust;
 
 use std::{borrow, env, io, process};
