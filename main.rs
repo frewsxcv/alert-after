@@ -11,8 +11,7 @@ type ExitCode = i32;
 
 #[cfg(target_os = "macos")]
 fn notify(msg_title: &str, msg_body: &str) {
-    let bundle = mac_notification_sys::get_bundle_identifier("safari").unwrap();
-
+    let bundle = mac_notification_sys::get_bundle_identifier("Script Editor").unwrap();
     mac_notification_sys::set_application(&bundle).unwrap();
     mac_notification_sys::send_notification(msg_title, &None, msg_body, &None).unwrap();
 }
