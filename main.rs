@@ -17,8 +17,7 @@ fn notify(msg_title: &str, msg_body: &str) {
 
 #[cfg(not(target_os = "macos"))]
 fn notify(msg_title: &str, msg_body: &str) {
-    use notify_rust::Notification;
-    Notification::new()
+    notify_rust::Notification::new()
         .summary(msg_title)
         .body(msg_body)
         .show()
