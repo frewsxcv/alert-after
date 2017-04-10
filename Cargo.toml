@@ -13,5 +13,8 @@ path = "main.rs"
 [target.'cfg(target_os = "macos")'.dependencies]
 mac-notification-sys = "0.1.0"
 
-[target.'cfg(not(target_os = "macos"))'.dependencies]
+[target.'cfg(target_os = "linux")'.dependencies]
 notify-rust = "3.3"
+
+[target.'cfg(windows)'.dependencies]
+winrt = {version = "0.2.1", features = ["windows-data", "windows-ui"]}

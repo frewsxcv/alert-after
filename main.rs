@@ -1,8 +1,11 @@
 #[cfg(target_os = "macos")]
 extern crate mac_notification_sys;
 
-#[cfg(not(target_os = "macos"))]
+#[cfg(target_os = "linux")]
 extern crate notify_rust;
+
+#[cfg(target_os = "windows")]
+extern crate winrt;
 
 use std::{borrow, env, error, io, process};
 use std::io::Write;
@@ -16,13 +19,30 @@ fn notify(msg_title: &str, msg_body: &str) {
     mac_notification_sys::send_notification(msg_title, &None, msg_body, &None).unwrap();
 }
 
-#[cfg(not(target_os = "macos"))]
+#[cfg(target_os = "linux")]
 fn notify(msg_title: &str, msg_body: &str) {
     notify_rust::Notification::new()
         .summary(msg_title)
         .body(msg_body)
         .show()
         .unwrap();
+}
+
+#[cfg(target_os = "windows")]
+fn notify(msg_title: &str, msg_body: &str) {
+    use winrt::*;
+    use winrt::windows::data::xml::dom::*;
+    use winrt::windows::ui::notifications::*;
+    unsafe {
+    let mut toast_xml = ToastNotificationManager::get_template_content(ToastTemplateType_ToastText02).unwrap();
+    let mut toast_text_elements = toast_xml.get_elements_by_tag_name(&FastHString::new("text")).unwrap();
+    
+    toast_text_elements.item(0).unwrap().append_child(&*toast_xml.create_text_node(&FastHString::from(msg_title)).unwrap().query_interface::<IXmlNode>().unwrap()).unwrap();
+    toast_text_elements.item(1).unwrap().append_child(&*toast_xml.create_text_node(&FastHString::from(msg_body)).unwrap().query_interface::<IXmlNode>().unwrap()).unwrap();
+
+    let toast = ToastNotification::create_toast_notification(&*toast_xml).unwrap();
+    ToastNotificationManager::create_toast_notifier_with_id(&FastHString::new("aa")).unwrap().show(&*toast).unwrap();
+    }   
 }
 
 fn exit_status_to_message(exit_status: process::ExitStatus) -> borrow::Cow<'static, str> {
@@ -35,7 +55,14 @@ fn exit_status_to_message(exit_status: process::ExitStatus) -> borrow::Cow<'stat
 
 fn spawn_command(args: &[String]) -> Result<process::Child, Box<error::Error>> {
     let program_name = try!(first_arg_as_program_name(&args));
-    match process::Command::new(program_name.clone()).args(args).spawn() {
+
+    let process = if cfg!(windows) {
+        process::Command::new(program_name.clone()).args(&args[1..]).spawn()
+    } else {
+        process::Command::new(program_name.clone()).args(args).spawn()
+    };
+
+    match process {
         Ok(child) => Ok(child),
         Err(e) => Err(format!("aa: Unknown command '{}': {}", program_name, e).into()),
     }
@@ -61,9 +88,20 @@ fn alert_after() -> Result<ExitCode, Box<error::Error>> {
     Ok(exit_status.code().unwrap_or(0))
 }
 
-fn main() {
+fn run() {
     match alert_after() {
         Ok(exit_code) => process::exit(exit_code),
         Err(e) => writeln!(io::stderr(), "aa: {}", e).expect("could not write to stderr"),
+    }
+}
+
+fn main() {
+    if cfg!(windows) {
+        let rt = winrt::RuntimeContext::init();
+        run();
+        rt.uninit();
+    }
+    else {
+        run();   
     }
 }
