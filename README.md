@@ -28,3 +28,9 @@ Get a desktop notification after retrieving Google:
 ```
 aa wget google.com
 ```
+
+# Upgrade
+
+```
+cargo install --force alert-after
+```
