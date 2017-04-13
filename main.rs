@@ -88,6 +88,17 @@ fn alert_after() -> Result<ExitCode, Box<error::Error>> {
     Ok(exit_status.code().unwrap_or(0))
 }
 
+#[cfg(windows)]
+fn run() {
+    let rt = winrt::RuntimeContext::init();
+    match alert_after() {
+        Ok(exit_code) => process::exit(exit_code),
+        Err(e) => writeln!(io::stderr(), "aa: {}", e).expect("could not write to stderr"),
+    }
+    rt.uninit();
+}
+
+#[cfg(not(windows))]
 fn run() {
     match alert_after() {
         Ok(exit_code) => process::exit(exit_code),
@@ -96,12 +107,5 @@ fn run() {
 }
 
 fn main() {
-    if cfg!(windows) {
-        let rt = winrt::RuntimeContext::init();
-        run();
-        rt.uninit();
-    }
-    else {
-        run();
-    }
+    run();
 }
