@@ -4,14 +4,14 @@ Get a desktop notification after a command finishes executing. Helpful for notif
 
 ![](http://i.imgur.com/XCTUJfT.gif)
 
-# Install
+## Install
 
 1. [Install Rust](https://rustup.rs/)
 2. `cargo install alert-after`
 
 If installing on Linux, [Libdbus is also required](https://github.com/diwic/dbus-rs#requirements).
 
-# Usage
+## Usage
 
 ```
 aa <command name and args>
@@ -29,7 +29,7 @@ Get a desktop notification after retrieving Google:
 aa wget google.com
 ```
 
-# Upgrade
+## Upgrade
 
 ```
 cargo install --force alert-after
