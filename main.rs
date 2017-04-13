@@ -36,13 +36,13 @@ fn notify(msg_title: &str, msg_body: &str) {
     unsafe {
     let mut toast_xml = ToastNotificationManager::get_template_content(ToastTemplateType_ToastText02).unwrap();
     let mut toast_text_elements = toast_xml.get_elements_by_tag_name(&FastHString::new("text")).unwrap();
-    
+
     toast_text_elements.item(0).unwrap().append_child(&*toast_xml.create_text_node(&FastHString::from(msg_title)).unwrap().query_interface::<IXmlNode>().unwrap()).unwrap();
     toast_text_elements.item(1).unwrap().append_child(&*toast_xml.create_text_node(&FastHString::from(msg_body)).unwrap().query_interface::<IXmlNode>().unwrap()).unwrap();
 
     let toast = ToastNotification::create_toast_notification(&*toast_xml).unwrap();
     ToastNotificationManager::create_toast_notifier_with_id(&FastHString::new("aa")).unwrap().show(&*toast).unwrap();
-    }   
+    }
 }
 
 fn exit_status_to_message(exit_status: process::ExitStatus) -> borrow::Cow<'static, str> {
@@ -102,6 +102,6 @@ fn main() {
         rt.uninit();
     }
     else {
-        run();   
+        run();
     }
 }
