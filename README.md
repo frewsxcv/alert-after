@@ -44,6 +44,6 @@ C:/Users/user/.cargo/bin/aa.exe: error while loading shared libraries: api-ms-wi
 
 >Note that winrt requires at least Windows 8 (I have only tested in on Windows 10, but the WinRT was introduced in Windows 8, so it should work).
 >
->Furthermore, the example in the README aa sleep 5 doesn't work on Windows: In good old cmd.exe there is no sleep command; in Powershell there is a sleep command, but it's a shell built-in (Cmdlet), so it won't work with aa (related to #8). There is an alternative timeout command that does something similar and works in cmd and Powershell, though. The wget example similarly won't usually work, because wget is usually not installed on Windows. Powershell has a default alias wget for the Invoke-WebRequest Cmdlet, but again, this won't work with aa, since there is no actual executable called wget.
+>Furthermore, the example in the README aa sleep 5 doesn't work on Windows: In good old cmd.exe there is no sleep command; in Powershell there is a sleep command, but it's a shell built-in (Cmdlet), so it won't work with aa (related to https://github.com/frewsxcv/alert-after/issues/8). There is an alternative timeout command that does something similar and works in cmd and Powershell, though. The wget example similarly won't usually work, because wget is usually not installed on Windows. Powershell has a default alias wget for the Invoke-WebRequest Cmdlet, but again, this won't work with aa, since there is no actual executable called wget.
 
 from https://github.com/frewsxcv/alert-after/issues/2#issuecomment-293819992
