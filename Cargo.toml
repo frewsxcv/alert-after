@@ -1,6 +1,6 @@
 [package]
 name = "alert-after"
-version = "1.4.0"
+version = "1.4.1"
 authors = ["Corey Farwell <coreyf@rwell.org>"]
 license = "MIT/Apache-2.0"
 description = "Get a desktop notification after a command finishes executing"
