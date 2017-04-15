@@ -55,14 +55,7 @@ fn exit_status_to_message(exit_status: process::ExitStatus) -> borrow::Cow<'stat
 
 fn spawn_command(args: &[String]) -> Result<process::Child, Box<error::Error>> {
     let program_name = try!(first_arg_as_program_name(&args));
-
-    let process = if cfg!(windows) {
-        process::Command::new(program_name.clone()).args(&args[1..]).spawn()
-    } else {
-        process::Command::new(program_name.clone()).args(args).spawn()
-    };
-
-    match process {
+    match process::Command::new(program_name.clone()).args(&args[1..]).spawn() {
         Ok(child) => Ok(child),
         Err(e) => Err(format!("aa: Unknown command '{}': {}", program_name, e).into()),
     }
