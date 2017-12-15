@@ -17,4 +17,4 @@ mac-notification-sys = "0.1.0"
 notify-rust = "3.3"
 
 [target.'cfg(windows)'.dependencies]
-winrt = {version = "0.2.1", features = ["windows-data", "windows-ui"]}
+winrt = {version = "0.3.0", features = ["windows-data", "windows-ui"]}
