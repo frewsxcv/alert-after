@@ -1,10 +1,10 @@
-[root]
+[[package]]
 name = "alert-after"
 version = "1.4.1"
 dependencies = [
  "mac-notification-sys 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "notify-rust 3.3.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "winrt 0.2.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "winrt 0.3.0 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
@@ -194,7 +194,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "winrt"
-version = "0.2.1"
+version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "ole32-sys 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -228,4 +228,4 @@ dependencies = [
 "checksum time 0.1.36 (registry+https://github.com/rust-lang/crates.io-index)" = "211b63c112206356ef1ff9b19355f43740fc3f85960c598a93d3a3d3ba7beade"
 "checksum winapi 0.2.8 (registry+https://github.com/rust-lang/crates.io-index)" = "167dc9d6949a9b857f3451275e911c3f44255842c1f7a76f33c55103a909087a"
 "checksum winapi-build 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)" = "2d315eee3b34aca4797b2da6b13ed88266e6d612562a0c46390af8299fc699bc"
-"checksum winrt 0.2.1 (registry+https://github.com/rust-lang/crates.io-index)" = "fc922423f6a9e3eadbaf8c16a679e1d790abcf1195a3d552c3aaa09b5cce1841"
+"checksum winrt 0.3.0 (registry+https://github.com/rust-lang/crates.io-index)" = "ce322394c4d48755ad50fc867ffb70b433a336944935c3098b4e1ca4bbb0870a"
