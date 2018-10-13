@@ -54,7 +54,7 @@ fn exit_status_to_message(exit_status: process::ExitStatus) -> borrow::Cow<'stat
 }
 
 fn spawn_command(args: &[String]) -> Result<process::Child, Box<error::Error>> {
-    let program_name = try!(first_arg_as_program_name(&args));
+    let program_name = first_arg_as_program_name(&args)?;
     match process::Command::new(program_name.clone()).args(&args[1..]).spawn() {
         Ok(child) => Ok(child),
         Err(e) => Err(format!("aa: Unknown command '{}': {}", program_name, e).into()),
@@ -74,7 +74,7 @@ fn first_arg_as_program_name(args: &[String]) -> Result<String, Box<error::Error
 
 fn alert_after() -> Result<ExitCode, Box<error::Error>> {
     let args = args();
-    let mut child = try!(spawn_command(&args));
+    let mut child = spawn_command(&args)?;
     let exit_status = child.wait().expect("failed to wait on command");
     let cmd_success = exit_status_to_message(exit_status);
     notify(&args.join(" "), &cmd_success);
