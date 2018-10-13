@@ -7,8 +7,8 @@ extern crate notify_rust;
 #[cfg(target_os = "windows")]
 extern crate winrt;
 
-use std::{borrow, env, error, io, process};
 use std::io::Write;
+use std::{borrow, env, error, io, process};
 
 type ExitCode = i32;
 
@@ -30,18 +30,46 @@ fn notify(msg_title: &str, msg_body: &str) {
 
 #[cfg(target_os = "windows")]
 fn notify(msg_title: &str, msg_body: &str) {
-    use winrt::*;
     use winrt::windows::data::xml::dom::*;
     use winrt::windows::ui::notifications::*;
+    use winrt::*;
     unsafe {
-    let toast_xml = ToastNotificationManager::get_template_content(ToastTemplateType_ToastText02).unwrap();
-    let toast_text_elements = toast_xml.get_elements_by_tag_name(&FastHString::new("text")).unwrap();
+        let toast_xml =
+            ToastNotificationManager::get_template_content(ToastTemplateType_ToastText02).unwrap();
+        let toast_text_elements = toast_xml
+            .get_elements_by_tag_name(&FastHString::new("text"))
+            .unwrap();
 
-    toast_text_elements.item(0).unwrap().append_child(&*toast_xml.create_text_node(&FastHString::from(msg_title)).unwrap().query_interface::<IXmlNode>().unwrap()).unwrap();
-    toast_text_elements.item(1).unwrap().append_child(&*toast_xml.create_text_node(&FastHString::from(msg_body)).unwrap().query_interface::<IXmlNode>().unwrap()).unwrap();
+        toast_text_elements
+            .item(0)
+            .unwrap()
+            .append_child(
+                &*toast_xml
+                    .create_text_node(&FastHString::from(msg_title))
+                    .unwrap()
+                    .query_interface::<IXmlNode>()
+                    .unwrap(),
+            )
+            .unwrap();
+        toast_text_elements
+            .item(1)
+            .unwrap()
+            .append_child(
+                &*toast_xml
+                    .create_text_node(&FastHString::from(msg_body))
+                    .unwrap()
+                    .query_interface::<IXmlNode>()
+                    .unwrap(),
+            )
+            .unwrap();
 
-    let toast = ToastNotification::create_toast_notification(&*toast_xml).unwrap();
-    ToastNotificationManager::create_toast_notifier_with_id(&FastHString::new("{1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\\WindowsPowerShell\\v1.0\\powershell.exe")).unwrap().show(&*toast).unwrap();
+        let toast = ToastNotification::create_toast_notification(&*toast_xml).unwrap();
+        ToastNotificationManager::create_toast_notifier_with_id(&FastHString::new(
+            "{1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\\WindowsPowerShell\\v1.0\\powershell.exe",
+        ))
+        .unwrap()
+        .show(&*toast)
+        .unwrap();
     }
 }
 
@@ -55,7 +83,8 @@ fn exit_status_to_message(exit_status: process::ExitStatus) -> borrow::Cow<'stat
 
 fn spawn_command(args: &[String]) -> Result<process::Child, Box<error::Error>> {
     let program_name = first_arg_as_program_name(&args)?;
-    process::Command::new(program_name.clone()).args(&args[1..])
+    process::Command::new(program_name.clone())
+        .args(&args[1..])
         .spawn()
         .map_err(|e| format!("aa: Unknown command '{}': {}", program_name, e).into())
 }
