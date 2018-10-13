@@ -55,10 +55,9 @@ fn exit_status_to_message(exit_status: process::ExitStatus) -> borrow::Cow<'stat
 
 fn spawn_command(args: &[String]) -> Result<process::Child, Box<error::Error>> {
     let program_name = first_arg_as_program_name(&args)?;
-    match process::Command::new(program_name.clone()).args(&args[1..]).spawn() {
-        Ok(child) => Ok(child),
-        Err(e) => Err(format!("aa: Unknown command '{}': {}", program_name, e).into()),
-    }
+    process::Command::new(program_name.clone()).args(&args[1..])
+        .spawn()
+        .map_err(|e| format!("aa: Unknown command '{}': {}", program_name, e).into())
 }
 
 fn args() -> Vec<String> {
@@ -66,10 +65,9 @@ fn args() -> Vec<String> {
 }
 
 fn first_arg_as_program_name(args: &[String]) -> Result<String, Box<error::Error>> {
-    match args.first() {
-        Some(program_name) => Ok(program_name.clone()),
-        None => Err("usage: aa <program name and args>".into()),
-    }
+    args.first()
+        .cloned()
+        .ok_or_else(|| "usage: aa <program name and args>".into())
 }
 
 fn alert_after() -> Result<ExitCode, Box<error::Error>> {
