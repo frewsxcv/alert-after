@@ -10,11 +10,5 @@ repository = "https://github.com/frewsxcv/alert-after"
 name = "aa"
 path = "main.rs"
 
-[target.'cfg(target_os = "macos")'.dependencies]
-mac-notification-sys = "0.2.0"
-
-[target.'cfg(target_os = "linux")'.dependencies]
-notify-rust = "3.3"
-
-[target.'cfg(windows)'.dependencies]
-winrt = {version = "0.3.0", features = ["windows-data", "windows-ui"]}
+[dependencies]
+notifica = "1.0"
