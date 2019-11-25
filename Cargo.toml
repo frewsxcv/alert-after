@@ -5,6 +5,7 @@ authors = ["Corey Farwell <coreyf@rwell.org>"]
 license = "MIT/Apache-2.0"
 description = "Get a desktop notification after a command finishes executing"
 repository = "https://github.com/frewsxcv/alert-after"
+edition = "2018"
 
 [[bin]]
 name = "aa"
