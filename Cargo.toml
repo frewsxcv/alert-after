@@ -12,4 +12,4 @@ name = "aa"
 path = "main.rs"
 
 [dependencies]
-notifica = "3.0.1"
+notifica = "3.0.2"
